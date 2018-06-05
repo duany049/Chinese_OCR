@@ -51,9 +51,10 @@ tf.app.flags.DEFINE_string('predict_dir', './predict', "the origin and resule to
 tf.app.flags.DEFINE_string('to_predict_img', 'toPredict.png', "the origin img to be predicted")
 tf.app.flags.DEFINE_string('predict_result', 'predict.result', "the result to store predict result")
 
-tf.app.flags.DEFINE_float('start_learning_rate', 0.05, "the start learning_rate of model")
-tf.app.flags.DEFINE_float('decay_rate', 0.95, "the decay rate of learning rate")
-tf.app.flags.DEFINE_float('decay_steps', 500, "the steps of decay rate")
+tf.app.flags.DEFINE_float('learning_rate', 0.05, "the learning_rate of model")
+# 使用adam优化器会根据参数动态约束学习率,不需要指定衰减率
+# tf.app.flags.DEFINE_float('decay_rate', 0.95, "the decay rate of learning rate")
+# tf.app.flags.DEFINE_float('decay_steps', 500, "the steps of decay rate")
 
 # 配置每个gpu占用内存的比例
 # gup_option = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
@@ -160,10 +161,10 @@ def build_graph(top_k):
             loss = control_flow_ops.with_dependencies([updates], loss)
 
         global_step = tf.get_variable("step", [], initializer=tf.constant_initializer(0.0), trainable=False)
-        learning_rate = tf.train.exponential_decay(learning_rate=FLAGS.start_learning_rate, global_step=global_step,
-                                                   decay_rate=FLAGS.decay_rate, decay_steps=FLAGS.decay_steps,
-                                                   staircase=True)
-        optimizer = tf.train.AdamOptimizer(learning_rate)
+        # learning_rate = tf.train.exponential_decay(learning_rate=FLAGS.start_learning_rate, global_step=global_step,
+        #                                            decay_rate=FLAGS.decay_rate, decay_steps=FLAGS.decay_steps,
+        #                                            staircase=True)
+        optimizer = tf.train.AdamOptimizer(FLAGS.learning_rate)
         # 创造一个操作，用来计算梯度，并且返回loss
         train_operation = slim.learning.create_train_op(loss, optimizer=optimizer, global_step=global_step)
         probabilities = tf.nn.softmax(logits)
@@ -188,7 +189,6 @@ def build_graph(top_k):
                 'accuracy_top_k': accuracy_in_top_k,
                 'merged_summary_op': merged_summary_op,
                 'predicted_distribution': probabilities,
-                'learning_rate': learning_rate,
                 'predicted_index_top_k': predicted_index_top_k,
                 'predicted_prob_top_k': predicted_prob_top_k}
 
@@ -234,15 +234,13 @@ def train():
                              graph['labels']: train_batch_labels,
                              graph['keep_prob']: 0.8,
                              graph['is_training']: True}
-                _, loss_val, train_summary, step, learning_rate = sess.run(
-                    [graph['train_operation'], graph['loss'], graph['merged_summary_op'], graph['global_step'],
-                     graph['learning_rate']],
+                _, loss_val, train_summary, step = sess.run(
+                    [graph['train_operation'], graph['loss'], graph['merged_summary_op'], graph['global_step']],
                     feed_dict=feed_dict)
                 train_writer.add_summary(train_summary, step)
                 end_time = time.time()
                 logger.info(
-                    "the step {0} takes {1} loss {2} learning rate {3}".format(step, end_time - start_time, loss_val,
-                                                                               learning_rate))
+                    "the step {0} takes {1} loss {2}".format(step, end_time - start_time, loss_val))
                 if step > FLAGS.max_steps:
                     break
                 if step % FLAGS.eval_steps == 1:
