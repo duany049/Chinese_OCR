@@ -450,7 +450,7 @@ def main(_):
             # label_dict[int(candidate3)], final_predict_prob[i]))
         print ('=====================OCR RESULT=======================\n')
         print (change_line_index)
-        with open(os.path.join(FLAGS.predict_dir, FLAGS.predict_result), 'w') as f:
+        with open(os.path.join(FLAGS.predict_dir, FLAGS.predict_result), 'wb') as f:
             cur_line_inde = 0
             # 打印出所有识别出来的结果（取top 1）
             for i in range(len(final_reco_text)):
