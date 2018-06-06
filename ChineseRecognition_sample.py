@@ -35,7 +35,7 @@ tf.app.flags.DEFINE_boolean('gray', True, "whether to change the rbg to gray")
 tf.app.flags.DEFINE_boolean('restore', False, 'whether to restore from checkpoint')
 tf.app.flags.DEFINE_boolean('epoch', 1, 'Number of epoches')
 
-tf.app.flags.DEFINE_integer('charset_size', 3782, "Choose the first `charset_size` characters only.")
+tf.app.flags.DEFINE_integer('charset_size', 3765, "Choose the first `charset_size` characters only.")
 tf.app.flags.DEFINE_integer('image_size', 64, "Needs to provide same value as in training.")
 tf.app.flags.DEFINE_integer('max_steps', 20002, 'the max training steps ')
 tf.app.flags.DEFINE_integer('eval_steps', 100, "the step num to eval")

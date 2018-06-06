@@ -287,15 +287,15 @@ def get_chinese_dict():
 # 解析参数
 def parse_argument():
     parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter)
-    parser.add_argument('--out_dir', dest='out_dir', default=None, required=True, help='the dir of generate dateset')
-    parser.add_argument('--font_dir', dest='font_dir', default=None, required=True,
+    parser.add_argument('--out_dir', dest='out_dir', default='./dataset', required=True, help='the dir of generate dateset')
+    parser.add_argument('--font_dir', dest='font_dir', default='./chinese_fonts', required=True,
                         help='font dir to to produce images')
-    parser.add_argument('--test_ratio', dest='test_ratio', default=0.2, required=False, help='')
-    parser.add_argument('--width', dest='width', default=32, required=True, help='width of image')
-    parser.add_argument('--height', dest='height', default=32, required=True, help='height of image')
-    parser.add_argument('--margin', dest='margin', default=0, required=False, help='', )
-    parser.add_argument('--rotate', dest='rotate', default=0, required=False, help='max rotate degree 0-45')
-    parser.add_argument('--rotate_step', dest='rotate_step', default=0, required=False,
+    parser.add_argument('--test_num_ratio', dest='test_num_ratio', default=0.2, required=False, help='')
+    parser.add_argument('--width', dest='width', default=64, required=False, help='width of image')
+    parser.add_argument('--height', dest='height', default=64, required=False, help='height of image')
+    parser.add_argument('--margin', dest='margin', default=4, required=False, help='', )
+    parser.add_argument('--rotate', dest='rotate', default=30, required=False, help='max rotate degree 0-45')
+    parser.add_argument('--rotate_step', dest='rotate_step', default=1, required=False,
                         help='rotate step for the rotate angle')
     parser.add_argument('--need_aug', dest='need_aug', default=False, required=False, help='need data augmentation',
                         action='store_true')
@@ -309,7 +309,7 @@ if __name__ == '__main__':
     # os.path.expanduser把path中包含的"~"和"~user"转换成用户目录
     out_dir = os.path.expanduser(args['out_dir'])
     font_dir = os.path.expanduser(args['font_dir'])
-    test_ratio = float(args['test_ratio'])
+    test_num_ratio = float(args['test_num_ratio'])
     width = int(args['width'])
     height = int(args['height'])
     margin = int(args['margin'])
@@ -376,7 +376,7 @@ if __name__ == '__main__':
             dataAug = DataAugmentation(True, True, True)
             image_list = dataAug.do(image_list)
 
-        test_num = len(image_list) * test_ratio
+        test_num = len(image_list) * test_num_ratio
         random.shuffle(image_list)  # 打乱顺序
         count = 0
         # 从当前汉字的图片列表中抽取test_num作为测试数据
