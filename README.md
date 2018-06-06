@@ -53,8 +53,16 @@ python ChineseRecognition_sample.py --mode=predict --predict_dir=./predict --to_
 ```
 ### 项目预测的流程：
 1、待预测图片toPredict.png是一篇文章的截图
+<br/>
 2、执行预测模式，先对进待预测图片进行单字切割，结果存成一个list数组，list数组中每个元素为待预测图片中一行文字的list
+<br/>
 3、对list中每个汉字进行识别，并且把结果输出到predict.result文本中
+<br/>
 ### 待提升之处
 1、暂时还不支持中文的符号识别
+<br/>
 2、切割后的单个文字，如果识别不出此文字，则根据组合附近的文字再识别再切割
+<br/>
+
+更多深度学习、机器学习、统计学习的内容可以观看我的博客
+[段逍遥的博客](https://blog.csdn.net/u011070767)
