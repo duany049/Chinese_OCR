@@ -31,12 +31,30 @@
 
 ### 运行项目步骤：
 1、生成循环及测试数据
-<br/>
-python GenerateWords.py --out_dir ./dataset --font_dir ./chinese_fonts --width 64 --height 64 --margin 4 --rotate 30 --rotate_step 1
-<br/>
+```
+python GenerateWords.py --out_dir ./dataset --font_dir ./chinese_fonts
+```
 2、训练模型
-<br/>
+使用含12层卷积层的神经网络来训练
+```
+python ChineseRecognition.py --mode=train
+```
+使用含5层卷积层的神经网络来训练
+```
+python ChineseRecognition_sample.py --mode=train
+```
 3、测试模型
-<br/>
+```
+python ChineseRecognition_sample.py --mode=test
+```
 4、预测模型
-<br/>
+```
+python ChineseRecognition_sample.py --mode=predict --predict_dir=./predict --to_predict_img=toPredict.png --predict_result=predict.result
+```
+### 项目预测的流程：
+1、待预测图片toPredict.png是一篇文章的截图
+2、执行预测模式，先对进待预测图片进行单字切割，结果存成一个list数组，list数组中每个元素为待预测图片中一行文字的list
+3、对list中每个汉字进行识别，并且把结果输出到predict.result文本中
+### 待提升之处
+1、暂时还不支持中文的符号识别
+2、切割后的单个文字，如果识别不出此文字，则根据组合附近的文字再识别再切割
