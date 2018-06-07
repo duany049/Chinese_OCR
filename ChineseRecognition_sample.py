@@ -150,7 +150,7 @@ def build_graph(top_k):
             max_pool_3 = slim.max_pool2d(conv3_3, [2, 2], [2, 2], padding='SAME', scope='pool3')
             conv3_4 = slim.conv2d(max_pool_3, 512, [3, 3], padding='SAME', scope='conv3_4')
             conv3_5 = slim.conv2d(conv3_4, 512, [3, 3], padding='SAME', scope='conv3_5')
-            max_pool_4 = slim.max_pool2d(conv3_5, [2, 2], [2, 2], padding='SAME', scope='pool4')
+            max_pool_4 = slim.max_pool2d(conv3_5, [2, 2], [2, 2], padding='VALID', scope='pool4')
 
             # 将输入扁平化，但是保持batch_size
             flatten = slim.flatten(max_pool_4)
