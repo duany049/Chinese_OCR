@@ -59,12 +59,7 @@ python ChineseRecognition_sample.py --mode=predict --predict_dir=./predict --to_
 3、对list中每个汉字进行识别，并且把结果输出到predict.result文本中
 <br/>
 ### 在测试集上的正确率：
-top 1 accuracy 0.9998542823405271 top 5 accuracy 0.9999112294718153
-### 待提升之处
-1、暂时还不支持中文的符号识别
-<br/>
-2、切割后的单个文字，如果识别不出此文字，则根据组合附近的文字再识别再切割
-<br/>
+top 1 accuracy 0.999 top 5 accuracy 0.999
 
 更多深度学习、机器学习、统计学习的内容可以观看我的博客
 [段逍遥的博客](https://blog.csdn.net/u011070767)
